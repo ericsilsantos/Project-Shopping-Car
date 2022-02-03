@@ -1,3 +1,5 @@
+// const { fetchProducts } = require("./helpers/fetchProducts");
+
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -15,7 +17,6 @@ function createCustomElement(element, className, innerText) {
 function createProductItemElement({ sku, name, image }) {
   const section = document.createElement('section');
   section.className = 'item';
-
   section.appendChild(createCustomElement('span', 'item__sku', sku));
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
@@ -23,6 +24,15 @@ function createProductItemElement({ sku, name, image }) {
 
   return section;
 }
+
+const preencherHtml = async () => {
+  const items = document.querySelector('.items');
+  const products = await fetchProducts();
+  products.forEach((product) => {
+    const objeto = { sku: product.id, name: product.title, image: product.thumbnail };
+    items.appendChild(createProductItemElement(objeto));
+  });
+};
 
 function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
@@ -40,4 +50,6 @@ function createCartItemElement({ sku, name, salePrice }) {
   return li;
 }
 
-window.onload = () => { };
+window.onload = () => {
+  preencherHtml();
+ };
