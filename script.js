@@ -1,5 +1,7 @@
 // const { fetchProducts } = require("./helpers/fetchProducts");
 
+// const { fetchItem } = require("./helpers/fetchItem");
+
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -30,7 +32,9 @@ const preencherHtml = async () => {
   const products = await fetchProducts();
   products.forEach((product) => {
     const objeto = { sku: product.id, name: product.title, image: product.thumbnail };
-    items.appendChild(createProductItemElement(objeto));
+    const item = createProductItemElement(objeto)
+    item.addEventListener('click', () => addNoCarrinho(objeto.sku));
+    items.appendChild(item)
   });
 };
 
@@ -48,6 +52,16 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
   li.addEventListener('click', cartItemClickListener);
   return li;
+}
+
+const addNoCarrinho = async (item) =>{
+  const carrinho = document.querySelector('.cart__items');
+  const itemSelect = await fetchItem(item)
+  const objeto = { 
+    sku: itemSelect.id, 
+    name: itemSelect.title, 
+    salePrice: itemSelect.price };
+  carrinho.appendChild(createCartItemElement(objeto));
 }
 
 window.onload = () => {
