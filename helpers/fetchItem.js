@@ -1,10 +1,10 @@
 const fetchItem = async (item) => {
   const url = `https://api.mercadolibre.com/items/${item}`;
-  try{
+  try {
     const resultado = await fetch(url);
     const resulItem = await resultado.json();
     return resulItem;
-  } catch(error) {
+  } catch (error) {
     console.log(`Error: ${error}`);
   }
 };
