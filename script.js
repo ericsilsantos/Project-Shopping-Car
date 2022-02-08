@@ -66,7 +66,7 @@ const loadingApi = () => {
 const loadedApi = () => {
   const loading = document.querySelector('.loading');
   loading.remove();
-}
+};
 
 const addNoCarrinho = async (item) => {
   const itemSelect = await fetchItem(item);
@@ -81,9 +81,9 @@ const addNoCarrinho = async (item) => {
 
 const preencherHtml = async () => {
   loadingApi();
-  const products = await fetchProducts();
+  const products = await fetchProducts('computador');
   loadedApi();
-  products.forEach((product) => {
+  products.results.forEach((product) => {
     const objeto = { sku: product.id, name: product.title, image: product.thumbnail };
     const item = createProductItemElement(objeto);
     item.querySelector('.item__add')
