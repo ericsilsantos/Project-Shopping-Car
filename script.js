@@ -4,6 +4,7 @@
 
 // const { fetchItem } = require("./helpers/fetchItem");
 const carrinho = document.querySelector('.cart__items');
+const btnClearCart = document.querySelector('.empty-cart');
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -79,6 +80,12 @@ const preencherHtml = async () => {
     items.appendChild(item);
   });
 };
+
+btnClearCart.addEventListener('click', () => {
+  carrinho.innerHTML = '';
+  saveCartItems(carrinho.innerHTML);
+  somarTotal();
+});
 
 window.onload = () => {
   preencherHtml();
