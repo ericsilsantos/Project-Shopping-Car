@@ -1,6 +1,9 @@
 // const { fetchProducts } = require("./helpers/fetchProducts");
 
+// const saveCartItems = require("./helpers/saveCartItems");
+
 // const { fetchItem } = require("./helpers/fetchItem");
+const carrinho = document.querySelector('.cart__items');
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -27,12 +30,13 @@ function createProductItemElement({ sku, name, image }) {
   return section;
 }
 
-function getSkuFromProductItem(item) {
-  return item.querySelector('span.item__sku').innerText;
-}
+// function getSkuFromProductItem(item) {
+//   return item.querySelector('span.item__sku').innerText;
+// }
 
 function cartItemClickListener(event) {
   event.target.remove();
+  saveCartItems(carrinho.innerHTML);
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
@@ -42,26 +46,34 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
+
 async function addNoCarrinho(item) {
-  const carrinho = document.querySelector('.cart__items');
   const itemSelect = await fetchItem(item);
   const objeto = { 
     sku: itemSelect.id, 
     name: itemSelect.title, 
     salePrice: itemSelect.price };
   carrinho.appendChild(createCartItemElement(objeto));
+  saveCartItems(carrinho.innerHTML);
 }
+
 const preencherHtml = async () => {
   const items = document.querySelector('.items');
   const products = await fetchProducts();
   products.forEach((product) => {
     const objeto = { sku: product.id, name: product.title, image: product.thumbnail };
     const item = createProductItemElement(objeto);
-    item.addEventListener('click', () => addNoCarrinho(objeto.sku));
+    item.querySelector('.item__add')
+      .addEventListener('click', () => addNoCarrinho(objeto.sku));
     items.appendChild(item);
   });
 };
 
 window.onload = () => {
   preencherHtml();
+  if (localStorage.getItem('cart')) {
+    carrinho.innerHTML = localStorage.getItem('cart');
+    const itensCarrinho = document.querySelectorAll('li');
+    itensCarrinho.forEach((item) => item.addEventListener('click', cartItemClickListener));
+  }
  };
