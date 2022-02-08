@@ -5,7 +5,7 @@ const fetchItem = async (item) => {
     const resulItem = await resultado.json();
     return resulItem;
   } catch (error) {
-    console.log(`Error: ${error}`);
+    return error;
   }
 };
 
