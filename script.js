@@ -3,6 +3,7 @@
 // const saveCartItems = require("./helpers/saveCartItems");
 
 // const { fetchItem } = require("./helpers/fetchItem");
+const catalogo = document.querySelector('.items');
 const carrinho = document.querySelector('.cart__items');
 const btnClearCart = document.querySelector('.empty-cart');
 
@@ -58,6 +59,15 @@ function createCartItemElement({ sku, name, salePrice }) {
   return li;
 }
 
+const loadingApi = () => {
+  catalogo.appendChild(createCustomElement('p', 'loading', 'Carregando...'));
+};
+
+const loadedApi = () => {
+  const loading = document.querySelector('.loading');
+  loading.remove();
+}
+
 const addNoCarrinho = async (item) => {
   const itemSelect = await fetchItem(item);
   const objeto = { 
@@ -70,14 +80,15 @@ const addNoCarrinho = async (item) => {
 };
 
 const preencherHtml = async () => {
-  const items = document.querySelector('.items');
+  loadingApi();
   const products = await fetchProducts();
+  loadedApi();
   products.forEach((product) => {
     const objeto = { sku: product.id, name: product.title, image: product.thumbnail };
     const item = createProductItemElement(objeto);
     item.querySelector('.item__add')
       .addEventListener('click', () => addNoCarrinho(objeto.sku));
-    items.appendChild(item);
+    catalogo.appendChild(item);
   });
 };
 
