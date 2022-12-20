@@ -147,3 +147,8 @@ body {
   border: 2px solid rgb(5, 52, 219);
   background-color: rgb(249, 249, 246);
 }
+
+.cart_li{
+  background-color: green;
+  color: white;
+}
